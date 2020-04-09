@@ -1,0 +1,72 @@
+#+title: ergodone:default
+
+* mode=0 default layer
+Left Hand
+| ===        | 1            | 2               | 3    | 4     | 5 | left       |
+| delete     | q            | w               | e    | r     | t | modeswitch |
+| backspace  | a            | s               | d    | f     | g |            |
+| shift_l    | control or z | x               | c    | v     | b | all_t(no)  |
+| lt(symb,`) | '            | alt_l + shift_l | left | right |   |            |
+
+|       | alt_t(kc_app) | gui_l |
+|       |               | home  |
+| space | backspace     | end   |
+
+Right Hand
+| right        | 6 | 7  | 8    | 9 | 0                | =-=            |
+| modeswitch   | y | u  | i    | o | p                | \              |
+|              | h | j  | k    | l | lt(mdia,kc_scln) | gui_t(kc_quot) |
+| meh_t(kc_no) | n | m  | ,    | . | ctl_k(/)         | gui_t(')       |
+|              |   | up | down | [ | ]                | tt(symb)       |
+
+| alt_l | control or esc |       |
+| pgup  |                |       |
+| pgdn  | tab            | enter |
+
+* mode=1 the symbols layer
+Left hand
+| version | f1 | f2 | f3 | f4 | f5    | "" |
+| ""      | !  | @  | {  | }  | \vert | "" |
+| ""      | #  | $  | (  | )  | `     |    |
+| ""      | %  | ^  | [  | ]  | ~     | "" |
+| eeprom  | "" | "" | "" | "" |       |    |
+
+|         | animat  | "" |
+|         |         | "" |
+| rgb_vad | rgb_vai | "" |
+
+
+Right hand
+| "" | f6   | f7 | f8 | f9 | f10 | f11 |
+| "" | up   |  7 |  8 |  9 | *   | f12 |
+|    | down |  4 |  5 |  6 | +   | ""  |
+| "" | &    |  1 |  2 |  3 | \   | ""  |
+|    |      | "" |  . |  0 | === | ""  |
+
+| rgb_tog | rgb_sld |         |
+| ""      |         |         |
+| ""      | rgb_hud | rgb_hui |
+
+* mode=2 media and mouse keys
+
+Left hand
+| "" | "" | ""        | ""        | ""         | "" | "" |
+| "" | "" | ""        | mouseUp   | ""         | "" | "" |
+| "" | "" | mouseLeft | mouseDown | mouseRight | "" |    |
+| "" | "" | ""        | ""        | ""         | "" | "" |
+| "" | "" | ""        | leftClick | rightClick |    |    |
+
+|    | "" | "" |
+|    |    | "" |
+| "" | "" | "" |
+
+Right Hand
+| "" | "" | ""       | ""         | ""   | "" | ""   |
+| "" | "" | ""       | ""         | ""   | "" | ""   |
+|    | "" | ""       | ""         | ""   | "" | play |
+| "" | "" | ""       | previous   | next | "" | ""   |
+|    |    | volumeUp | volumeDown | mute | "" | ""   |
+
+| "" | "" |      |
+| "" |    |      |
+| "" | "" | back |

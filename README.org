@@ -1,0 +1,25 @@
+#+title: org2qmk_keymap
+
+ergodone/ergodox-ez layout
+
+* Idea
+As I was starting to hacking on a qmk keymap for an ergodone, anticipating that I'd
+later have to port it for the ergodox-ez, keymap.c to lay it out, it
+occured to me that I could use org-mode's table mode, and then
+translate it to C.
+
+The only special syntax should be the =mode= header.  The table is
+translated left to right, top to bottom into an array, so the use of
+=""= as a way of generating a =KC_TRANS= token is imprtant to
+translate the structure correctly.  This should hopefully still be few
+steps than planning the keys, then counting symbols into the keymap.
+
+
+* Usage
+
+bundle exec org2keymap --in ./examples/ergodone_default.org --out keymap.c
+
+* Examples
+The default ergodone layout [[./examples/ergodone_default.org]]
+
+A blank ergodone mode [[./examples/ergodone_blank.org]]
