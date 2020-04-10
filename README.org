@@ -16,8 +16,15 @@ steps than planning the keys, then counting symbols into the keymap.
 
 
 * Usage
+#+BEGIN_SRC shell
+$ go run . examples/ergodone_default.org ergodone > keymap.c
+#+END_SRC
 
-bundle exec org2keymap --in ./examples/ergodone_default.org --out keymap.c
+
+Dev usage looks more like this:
+#+BEGIN_SRC shell
+find . -name '*.go' -o -name '*.org' | entr -s 'go test ./... && go run . examples/ergodone_default.org ergodone'
+#+END_SRC
 
 * Examples
 The default ergodone layout [[./examples/ergodone_default.org]]

@@ -2,7 +2,7 @@
 
 * mode=0 default layer
 Left Hand
-| ===        | 1            | 2               | 3    | 4     | 5 | left       |
+| ~=~        | 1            | 2               | 3    | 4     | 5 | left       |
 | delete     | q            | w               | e    | r     | t | modeswitch |
 | backspace  | a            | s               | d    | f     | g |            |
 | shift_l    | control or z | x               | c    | v     | b | all_t(no)  |
