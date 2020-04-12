@@ -1,39 +1,65 @@
 #+title: ergodone:default
 
-* mode=0 default layer
-Left Hand
-| ~=~        | 1            | 2               | 3    | 4     | 5 | left       |
-| delete     | q            | w               | e    | r     | t | modeswitch |
-| backspace  | a            | s               | d    | f     | g |            |
-| shift_l    | control or z | x               | c    | v     | b | all_t(no)  |
-| lt(symb,`) | '            | alt_l + shift_l | left | right |   |            |
+* preamble
 
-|       | alt_t(kc_app) | gui_l |
+#+begin_src c
+#include QMK_KEYBOARD_H
+#include "version.h"
+
+#define BASE 0 // default layer
+#define SYMB 1 // symbols
+#define MDIA 2 // media keys
+
+enum custom_keycodes {
+		      PLACEHOLDER = SAFE_RANGE, // can always be here
+		      EPRM,
+		      VRSN,
+		      RGB_SLD
+};
+#+end_src
+
+* layer 0 - default
+:PROPERTIES:
+:layout: BASE
+:END:
+
+Left Hand
+| ~=~             | 1           | 2           | 3    | 4     | 5 | left     |
+| delete          | q           | w           | e    | r     | t | TG(SYMB) |
+| backspace       | a           | s           | d    | f     | g |          |
+| shift_l         | CTL_T(KC_Z) | x           | c    | v     | b | hyper    |
+| LT(SYMB,KC_GRV) | '           | alt_shift_l | left | right |   |          |
+
+|       | ALT_T(KC_APP) | gui_l |
 |       |               | home  |
 | space | backspace     | end   |
 
 Right Hand
-| right        | 6 | 7  | 8    | 9 | 0                | =-=            |
-| modeswitch   | y | u  | i    | o | p                | \              |
-|              | h | j  | k    | l | lt(mdia,kc_scln) | gui_t(kc_quot) |
-| meh_t(kc_no) | n | m  | ,    | . | ctl_k(/)         | gui_t(')       |
-|              |   | up | down | [ | ]                | tt(symb)       |
+| right    | 6 | 7  | 8    | 9 | 0                 | ~-~            |
+| TG(SYMB) | y | u  | i    | o | p                 | \              |
+|          | h | j  | k    | l | LT(MDIA, KC_SCLN) | GUI_T(KC_QUOT) |
+| meh      | n | m  | ,    | . | CTL_T(KC_SLSH)    | shift_r        |
+|          |   | up | down | [ | ]                 | TT(SYMB)       |
 
-| alt_l | control or esc |       |
-| pgup  |                |       |
-| pgdn  | tab            | enter |
+| alt_r | CTL_T(KC_ESC) |       |
+| pgup  |               |       |
+| pgdn  | tab           | enter |
 
-* mode=1 the symbols layer
+* keymap 2: Symbol layer
+:PROPERTIES:
+:layout: SYMB
+:END:
+
 Left hand
-| version | f1 | f2 | f3 | f4 | f5    | "" |
-| ""      | !  | @  | {  | }  | \vert | "" |
-| ""      | #  | $  | (  | )  | `     |    |
-| ""      | %  | ^  | [  | ]  | ~     | "" |
-| eeprom  | "" | "" | "" | "" |       |    |
+| VRSN | f1        | f2 | f3 | f4 | f5    | "" |
+| ""   | !         | @  | {  | }  | \vert | "" |
+| ""   | shifted_# | $  | (  | )  | `     |    |
+| ""   | %         | ^  | [  | ]  | ~     | "" |
+| EPRM | ""        | "" | "" | "" |       |    |
 
-|         | animat  | "" |
+|         | RGB_MOD | "" |
 |         |         | "" |
-| rgb_vad | rgb_vai | "" |
+| RGB_VAD | RGB_VAI | "" |
 
 
 Right hand
@@ -41,32 +67,96 @@ Right hand
 | "" | up   |  7 |  8 |  9 | *   | f12 |
 |    | down |  4 |  5 |  6 | +   | ""  |
 | "" | &    |  1 |  2 |  3 | \   | ""  |
-|    |      | "" |  . |  0 | === | ""  |
+|    |      | "" |  . |  0 | ~=~ | ""  |
 
-| rgb_tog | rgb_sld |         |
+| RGB_TOG | RGB_SLD |         |
 | ""      |         |         |
-| ""      | rgb_hud | rgb_hui |
+| ""      | RGB_HUD | RGB_HUI |
 
-* mode=2 media and mouse keys
+* keymap 3: media and mouse keys
+:PROPERTIES:
+:layout: MDIA
+:END:
 
 Left hand
-| "" | "" | ""        | ""        | ""         | "" | "" |
-| "" | "" | ""        | mouseUp   | ""         | "" | "" |
-| "" | "" | mouseLeft | mouseDown | mouseRight | "" |    |
-| "" | "" | ""        | ""        | ""         | "" | "" |
-| "" | "" | ""        | leftClick | rightClick |    |    |
+| "" | "" | ""         | ""            | ""            | "" | "" |
+| "" | "" | ""         | mouse_up      | ""            | "" | "" |
+| "" | "" | mouse_left | mouse_down    | mouse_right   | "" |    |
+| "" | "" | ""         | ""            | ""            | "" | "" |
+| "" | "" | ""         | mouse_button1 | mouse_button2 |    |    |
 
 |    | "" | "" |
 |    |    | "" |
 | "" | "" | "" |
 
 Right Hand
-| "" | "" | ""       | ""         | ""   | "" | ""   |
-| "" | "" | ""       | ""         | ""   | "" | ""   |
-|    | "" | ""       | ""         | ""   | "" | play |
-| "" | "" | ""       | previous   | next | "" | ""   |
-|    |    | volumeUp | volumeDown | mute | "" | ""   |
+| "" | "" | ""        | ""             | ""         | "" | ""   |
+| "" | "" | ""        | ""             | ""         | "" | ""   |
+|    | "" | ""        | ""             | ""         | "" | play |
+| "" | "" | ""        | previous_track | next_track | "" | ""   |
+|    |    | volume_up | volume_down    | mute       | "" | ""   |
 
 | "" | "" |      |
 | "" |    |      |
 | "" | "" | back |
+
+
+* key handling
+
+#+BEGIN_SRC c
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    // dynamically generate these.
+  case EPRM:
+    if (record->event.pressed) {
+      eeconfig_init();
+    }
+    return false;
+    break;
+  case VRSN:
+    if (record->event.pressed) {
+      SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
+    }
+    return false;
+    break;
+  case RGB_SLD:
+    if (record->event.pressed) {
+#ifdef RGBLIGHT_ENABLE
+      rgblight_mode(1);
+#endif
+    }
+    return false;
+    break;
+  }
+  return true;
+}
+
+// Runs just one time when the keyboard initializes.
+void matrix_init_user(void) {
+
+};
+
+
+// Runs constantly in the background, in a loop.
+void matrix_scan_user(void) {
+
+  uint8_t layer = biton32(layer_state);
+
+  ergodox_board_led_off();
+  ergodox_right_led_1_off();
+  ergodox_right_led_2_off();
+  ergodox_right_led_3_off();
+  switch (layer) {
+    // TODO: Make this relevant to the ErgoDox EZ.
+  case 1:
+    ergodox_right_led_1_on();
+    break;
+  case 2:
+    ergodox_right_led_2_on();
+    break;
+  default:
+    // none
+    break;
+  }
+};
+#+END_SRC

@@ -8,23 +8,46 @@ later have to port it for the ergodox-ez, keymap.c to lay it out, it
 occured to me that I could use org-mode's table mode, and then
 translate it to C.
 
-The only special syntax should be the =mode= header.  The table is
-translated left to right, top to bottom into an array, so the use of
-=""= as a way of generating a =KC_TRANS= token is imprtant to
-translate the structure correctly.  This should hopefully still be few
-steps than planning the keys, then counting symbols into the keymap.
+There's no special syntax, outside of the handling of tables and
+headers.
+
+Headers that describe a layout should declare the ~LAYOUT~ property in
+their property drawer.  This sets up the keymaps definition in the
+output.
+
+~begin_src c~ blocks are tangled verbatim, so you can keep your own
+handlers alongside your layer definitions.
+
+Tables are translated left to right, top to bottom to generate an
+array.  The code will map user-readable key names into the keycodes
+that QMK defines.  Any not recognised will be copied verbatim, so you
+can still add custom keys or keys I didn't bother to translate yet.
+
+Blank cells are skippedn, so you'll want to make use of ~noop~ and
+~""~ to ensure your keymap is filled with the appropriate ~KC_NO~ and
+~KC_TRANS~ values keys for keys you don't want to specify the
+behaviour of.
+
+This should hopefully still be far simpler to manage steps than
+planning the keys, then counting symbols into the keymap.
 
 
 * Usage
-#+BEGIN_SRC shell
-$ go run . examples/ergodone_default.org ergodone > keymap.c
+See the generated code:
+
+#+BEGIN_SRC shell :tangle run.sh
+#!/bin/sh
+go run . examples/ergodone_default.org ergodone
 #+END_SRC
 
-
-Dev usage looks more like this:
-#+BEGIN_SRC shell
-find . -name '*.go' -o -name '*.org' | entr -s 'go test ./... && go run . examples/ergodone_default.org ergodone'
-#+END_SRC
+A full compile cycle looks like this (assuming qmk in ~/src/qmk_firmware)
+#+begin_src shell :tangle compile.sh
+#!/bin/sh
+set -x
+go run . examples/ergodone_default.org ergodone > $HOME/src/qmk_firmware/keyboards/ergodone/keymaps/$(whoami)/keymap.c
+cd $HOME/src/qmk_firmware
+make ergodone:$(whoami)
+#+end_src
 
 * Examples
 The default ergodone layout [[./examples/ergodone_default.org]]
