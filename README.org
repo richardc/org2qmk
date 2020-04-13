@@ -1,21 +1,28 @@
 #+title: org2qmk
 
-ergodone/ergodox-ez keymap description org-mode
+A tool to generate QMK firmware keymaps from org-mode files.
+
+* Installation
+
+#+begin_example
+go get github.com/richardc/org2qmk
+#+end_example
 
 * Usage
 To translate an org-file into a keymap.c
 
 #+BEGIN_SRC shell :tangle run.sh
 #!/bin/sh
-go run . examples/ergodone_default.org keymap
+org2qmk examples/ergodone_default.org keymap
 #+END_SRC
 
 A full compile cycle looks like this (assuming qmk in ~/src/qmk_firmware)
 #+begin_src shell :tangle compile.sh
 #!/bin/sh
-go run . examples/ergodone_default.org keymap \
-   > $HOME/src/qmk_firmware/keyboards/ergodone/keymaps/$(whoami)/keymap.c
-cd $HOME/src/qmk_firmware
+QMK=$HOME/src/qmk_firmware
+mkdir $QMK/keyboards/ergodone/keymaps/$(whoami)
+org2qmk examples/ergodone_default.org keymap > $QMK/keyboards/ergodone/keymaps/$(whoami)/keymap.c
+cd $QMK
 make ergodone:$(whoami)
 #+end_src
 
@@ -23,22 +30,21 @@ make ergodone:$(whoami)
 The main example file
 [[./examples/ergodone_default.org][ergodone_default.org]] translates
 [[https://github.com/qmk/qmk_firmware/blob/0.8.116/keyboards/ergodone/keymaps/default/keymap.c][ergodone:default]] from the QMK Firmware distribution.  It's also got a
-bunch of notes on how it works, so may be considered primary
+bunch of notes on how this is achieved, so may be considered primary
 documentation for now.
 
 * See also
 
 - [[https://qmk.fm/][QMK Firmware]] the firmware we're generating keymaps for
-- [[https://github.com/niklasfasching/go-org][go-org]] the org-mode parser that this code piggybacks on.
+- [[https://github.com/niklasfasching/go-org][go-org]] the org-mode parser that this code piggybacks on
+- [[https://orgmode.org/][org-mode]] the mode that takes over your brain
 
 * FAQ
 
 I don't know if these are really FAQs, but I have asked myself the
 questions a few times.
 
-** Why didn't you write ox-qmk-keymap instead
-Two main reasons:
-
+** Why didn't you write ox-qmk-keymap instead?
 I wanted to get some dust out of my system and program something in
 go.  I'd come across org-go when setting up hugo for my blog, and so
 it seemed like a good library to experiment around.  It is.
@@ -49,6 +55,7 @@ and cleaner implementation, so if you do it let me know and I'll
 happily link to you.
 
 ** Why not use the QMK Configurator?
-Sometimes I'm just not lazy enough.  Using the configurator and then
-versioning the keymap.json is a pretty good workflow, especially if
-you like guis.
+Sometimes I'm just not lazy enough.
+
+Using the configurator and then versioning the keymap.json is a pretty
+good workflow, especially if you like browser-based guis.

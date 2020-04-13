@@ -31,7 +31,6 @@ enum custom_keycodes {
 #+end_src
 
 * Keyboard Layers
-
 Keyboard layers are next.  They are introduced by headings with a
 properties drawer, which names the layer.  The next chunk looks like
 this in raw org:
