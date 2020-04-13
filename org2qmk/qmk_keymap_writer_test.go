@@ -7,6 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestErgodoneWriter(t *testing.T) {
-	assert.Implements(t, (*org.Writer)(nil), NewErgodoneWriter())
+func TestQmkKeymapWriter(t *testing.T) {
+	assert.Implements(t, (*org.Writer)(nil), NewQmkKeymapWriter())
 }

@@ -1,19 +1,19 @@
-#+title: org2qmk_keymap
+#+title: org2qmk
 
-ergodone/ergodox-ez layout in org-mode
+ergodone/ergodox-ez keymap description org-mode
 
 * Usage
 To translate an org-file into a keymap.c
 
 #+BEGIN_SRC shell :tangle run.sh
 #!/bin/sh
-go run . examples/ergodone_default.org ergodone > keymap.c
+go run . examples/ergodone_default.org keymap
 #+END_SRC
 
 A full compile cycle looks like this (assuming qmk in ~/src/qmk_firmware)
 #+begin_src shell :tangle compile.sh
 #!/bin/sh
-go run . examples/ergodone_default.org ergodone \
+go run . examples/ergodone_default.org keymap \
    > $HOME/src/qmk_firmware/keyboards/ergodone/keymaps/$(whoami)/keymap.c
 cd $HOME/src/qmk_firmware
 make ergodone:$(whoami)

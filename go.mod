@@ -1,4 +1,4 @@
-module github.com/richardc/org2qmk_keymap
+module github.com/richardc/org2qmk
 
 go 1.14
 

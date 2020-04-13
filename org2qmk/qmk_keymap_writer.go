@@ -10,14 +10,14 @@ import (
 
 // Implementation of org.Writer that emits ErgoDone keymap.c
 // https://github.com/niklasfasching/go-org/blob/master/org/writer.go
-type ErgodoneWriter struct {
+type QmkKeymapWriter struct {
 	inKeymap bool
 
 	strings.Builder
 }
 
-func NewErgodoneWriter() *ErgodoneWriter {
-	return &ErgodoneWriter{}
+func NewQmkKeymapWriter() *QmkKeymapWriter {
+	return &QmkKeymapWriter{}
 }
 
 // Basic keymappings, built up by =init()= also
@@ -134,7 +134,7 @@ func init() {
 	}
 }
 
-func (w *ErgodoneWriter) TranslateKeycode(descriptive string) string {
+func (w *QmkKeymapWriter) TranslateKeycode(descriptive string) string {
 	if keycode, ok := mappings[strings.ToLower(descriptive)]; ok {
 		return keycode
 	}
@@ -143,12 +143,12 @@ func (w *ErgodoneWriter) TranslateKeycode(descriptive string) string {
 	return descriptive
 }
 
-func (w *ErgodoneWriter) Before(d *org.Document) {}
-func (w *ErgodoneWriter) After(d *org.Document)  {}
+func (w *QmkKeymapWriter) Before(d *org.Document) {}
+func (w *QmkKeymapWriter) After(d *org.Document)  {}
 
-func (w *ErgodoneWriter) WriterWithExtensions() org.Writer { return w }
+func (w *QmkKeymapWriter) WriterWithExtensions() org.Writer { return w }
 
-func (w *ErgodoneWriter) WriteNodesAsString(nodes ...org.Node) string {
+func (w *QmkKeymapWriter) WriteNodesAsString(nodes ...org.Node) string {
 	builder := w.Builder
 	w.Builder = strings.Builder{}
 	org.WriteNodes(w, nodes...)
@@ -157,13 +157,13 @@ func (w *ErgodoneWriter) WriteNodesAsString(nodes ...org.Node) string {
 	return out
 }
 
-func (w *ErgodoneWriter) WriteKeyword(org.Keyword)           {}
-func (w *ErgodoneWriter) WriteInclude(org.Include)           {}
-func (w *ErgodoneWriter) WriteComment(org.Comment)           {}
-func (w *ErgodoneWriter) WriteNodeWithMeta(org.NodeWithMeta) {}
-func (w *ErgodoneWriter) WriteNodeWithName(org.NodeWithName) {}
+func (w *QmkKeymapWriter) WriteKeyword(org.Keyword)           {}
+func (w *QmkKeymapWriter) WriteInclude(org.Include)           {}
+func (w *QmkKeymapWriter) WriteComment(org.Comment)           {}
+func (w *QmkKeymapWriter) WriteNodeWithMeta(org.NodeWithMeta) {}
+func (w *QmkKeymapWriter) WriteNodeWithName(org.NodeWithName) {}
 
-func (w *ErgodoneWriter) startKeymap(s string) {
+func (w *QmkKeymapWriter) startKeymap(s string) {
 	if w.inKeymap {
 		w.WriteString("),\n")
 	} else {
@@ -176,7 +176,7 @@ func (w *ErgodoneWriter) startKeymap(s string) {
 	w.inKeymap = false
 }
 
-func (w *ErgodoneWriter) exitKeymap() {
+func (w *QmkKeymapWriter) exitKeymap() {
 	if !w.inKeymap {
 		return
 	}
@@ -184,7 +184,7 @@ func (w *ErgodoneWriter) exitKeymap() {
 	w.inKeymap = false
 }
 
-func (w *ErgodoneWriter) WriteHeadline(h org.Headline) {
+func (w *QmkKeymapWriter) WriteHeadline(h org.Headline) {
 	if h.Properties != nil {
 		if layer, ok := h.Properties.Get("LAYER"); ok {
 			w.startKeymap(layer)
@@ -195,7 +195,7 @@ func (w *ErgodoneWriter) WriteHeadline(h org.Headline) {
 	org.WriteNodes(w, h.Children...)
 }
 
-func (w *ErgodoneWriter) WriteBlock(b org.Block) {
+func (w *QmkKeymapWriter) WriteBlock(b org.Block) {
 	// Block should come across verbatim if they're c/c++
 	if b.Name == "SRC" && b.Parameters[0] == "c" {
 		w.exitKeymap()
@@ -203,20 +203,20 @@ func (w *ErgodoneWriter) WriteBlock(b org.Block) {
 	}
 }
 
-func (w *ErgodoneWriter) WriteExample(org.Example)               {}
-func (w *ErgodoneWriter) WriteDrawer(d org.Drawer)               {}
-func (w *ErgodoneWriter) WritePropertyDrawer(org.PropertyDrawer) {}
+func (w *QmkKeymapWriter) WriteExample(org.Example)               {}
+func (w *QmkKeymapWriter) WriteDrawer(d org.Drawer)               {}
+func (w *QmkKeymapWriter) WritePropertyDrawer(org.PropertyDrawer) {}
 
-func (w *ErgodoneWriter) WriteList(l org.List) {
+func (w *QmkKeymapWriter) WriteList(l org.List) {
 	org.WriteNodes(w, l.Items...)
 }
 
-func (w *ErgodoneWriter) WriteListItem(org.ListItem)                       {}
-func (w *ErgodoneWriter) WriteDescriptiveListItem(org.DescriptiveListItem) {}
+func (w *QmkKeymapWriter) WriteListItem(org.ListItem)                       {}
+func (w *QmkKeymapWriter) WriteDescriptiveListItem(org.DescriptiveListItem) {}
 
 func nonEmptyString(s string) bool { return s != "" }
 
-func (w *ErgodoneWriter) WriteTable(t org.Table) {
+func (w *QmkKeymapWriter) WriteTable(t org.Table) {
 	// Translate tables into keycodes
 	if w.inKeymap {
 		w.WriteString(",\n")
@@ -234,23 +234,23 @@ func (w *ErgodoneWriter) WriteTable(t org.Table) {
 	w.inKeymap = true
 }
 
-func (w *ErgodoneWriter) WriteHorizontalRule(org.HorizontalRule) {}
-func (w *ErgodoneWriter) WriteParagraph(org.Paragraph)           {}
+func (w *QmkKeymapWriter) WriteHorizontalRule(org.HorizontalRule) {}
+func (w *QmkKeymapWriter) WriteParagraph(org.Paragraph)           {}
 
-func (w *ErgodoneWriter) WriteText(t org.Text) { w.WriteString(t.Content) }
+func (w *QmkKeymapWriter) WriteText(t org.Text) { w.WriteString(t.Content) }
 
-func (w *ErgodoneWriter) WriteEmphasis(e org.Emphasis) {
+func (w *QmkKeymapWriter) WriteEmphasis(e org.Emphasis) {
 	org.WriteNodes(w, e.Content...)
 }
 
-func (w *ErgodoneWriter) WriteLatexFragment(org.LatexFragment)   {}
-func (w *ErgodoneWriter) WriteStatisticToken(org.StatisticToken) {}
+func (w *QmkKeymapWriter) WriteLatexFragment(org.LatexFragment)   {}
+func (w *QmkKeymapWriter) WriteStatisticToken(org.StatisticToken) {}
 
-func (w *ErgodoneWriter) WriteExplicitLineBreak(org.ExplicitLineBreak) {}
+func (w *QmkKeymapWriter) WriteExplicitLineBreak(org.ExplicitLineBreak) {}
 
-func (w *ErgodoneWriter) WriteLineBreak(org.LineBreak) { w.WriteString("\n") }
+func (w *QmkKeymapWriter) WriteLineBreak(org.LineBreak) { w.WriteString("\n") }
 
-func (w *ErgodoneWriter) WriteRegularLink(org.RegularLink)               {}
-func (w *ErgodoneWriter) WriteTimestamp(org.Timestamp)                   {}
-func (w *ErgodoneWriter) WriteFootnoteLink(org.FootnoteLink)             {}
-func (w *ErgodoneWriter) WriteFootnoteDefinition(org.FootnoteDefinition) {}
+func (w *QmkKeymapWriter) WriteRegularLink(org.RegularLink)               {}
+func (w *QmkKeymapWriter) WriteTimestamp(org.Timestamp)                   {}
+func (w *QmkKeymapWriter) WriteFootnoteLink(org.FootnoteLink)             {}
+func (w *QmkKeymapWriter) WriteFootnoteDefinition(org.FootnoteDefinition) {}
