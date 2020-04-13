@@ -21,6 +21,7 @@ func NewErgodoneWriter() *ErgodoneWriter {
 }
 
 // Basic keymappings, built up by =init()= also
+// TODO(richardc): this would probably be better off in an org-table that's included?
 var mappings = map[string]string{
 	// https://docs.qmk.fm/#/keycodes?id=basic-keycodes
 	"noop":        "KC_NO",
@@ -185,8 +186,8 @@ func (w *ErgodoneWriter) exitKeymap() {
 
 func (w *ErgodoneWriter) WriteHeadline(h org.Headline) {
 	if h.Properties != nil {
-		if layout, ok := h.Properties.Get("LAYOUT"); ok {
-			w.startKeymap(layout)
+		if layer, ok := h.Properties.Get("LAYER"); ok {
+			w.startKeymap(layer)
 		}
 	}
 

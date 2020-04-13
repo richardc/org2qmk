@@ -50,6 +50,6 @@ make ergodone:$(whoami)
 #+end_src
 
 * Examples
-The default ergodone layout [[./examples/ergodone_default.org]]
+[[https://github.com/qmk/qmk_firmware/blob/0.8.116/keyboards/ergodone/keymaps/default/keymap.c][ergodone:default]] expressed using this tool in [[./examples/ergodone_default.org]]
 
-A blank ergodone mode [[./examples/ergodone_blank.org]]
+A [[./examples/ergodone_blank.org][blank layer]] for use with an ergodone.

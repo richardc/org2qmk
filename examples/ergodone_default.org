@@ -1,6 +1,18 @@
 #+title: ergodone:default
+* Introduction
 
-* preamble
+This file is a demonstration for [[https://github.com/richardc/org2qmk_keymap][org2qmk_keymap]].  It's a direct
+equivalent to [[https://github.com/qmk/qmk_firmware/blob/0.8.116/keyboards/ergodone/keymaps/default/keymap.c][ergodone:default from the qmk_firmware repository]],
+with some added commentary on what the bits do and how it interacts
+with org2qmk_keymap.
+
+* C Preamble
+
+C source blocks are extracted verbatim.
+
+This allows us to do our standard includes, and define some macros
+that name the layers we'll set-up, along with an enum for the custom
+keycodes this keymap defines.
 
 #+begin_src c
 #include QMK_KEYBOARD_H
@@ -18,12 +30,35 @@ enum custom_keycodes {
 };
 #+end_src
 
-* layer 0 - default
+* Keyboard Layers
+
+Keyboard layers are next.  They are introduced by headings with a
+properties drawer, which names the layer.  The next chunk looks like
+this in raw org:
+
+#+begin_example
+, ** default layer
+, :PROPERTIES:
+, :LAYER: BASE
+, :END:
+#+end_example
+
+** default layer
 :PROPERTIES:
-:layout: BASE
+:LAYER: BASE
 :END:
 
-Left Hand
+Tables are translated into keysyms where they exist in the mapping
+table, or they will fall back to literal code.  Blank cells are not
+included, if you need a blank key you probably want to use ~KC_NO~, or
+its alias ~noop~.
+
+~CTL_T(KC_Z)~ is an example of using literal code.  It's the special
+"z acts as control or z" behaviour from qmk that allows for some
+rather compact layouts.  I don't expect to use this that often, so
+there isn't currently a generalised translation for the form.
+
+/Left Hand/
 | ~=~             | 1           | 2           | 3    | 4     | 5 | left     |
 | delete          | q           | w           | e    | r     | t | TG(SYMB) |
 | backspace       | a           | s           | d    | f     | g |          |
@@ -34,7 +69,7 @@ Left Hand
 |       |               | home  |
 | space | backspace     | end   |
 
-Right Hand
+/Right Hand/
 | right    | 6 | 7  | 8    | 9 | 0                 | ~-~            |
 | TG(SYMB) | y | u  | i    | o | p                 | \              |
 |          | h | j  | k    | l | LT(MDIA, KC_SCLN) | GUI_T(KC_QUOT) |
@@ -45,12 +80,22 @@ Right Hand
 | pgup  |               |       |
 | pgdn  | tab           | enter |
 
-* keymap 2: Symbol layer
+** Symbol layer
 :PROPERTIES:
-:layout: SYMB
+:LAYER: SYMB
 :END:
 
-Left hand
+Here we're using the ~""~ special token, it's ~KC_TRANS~, or
+mnemonically /ditto/, and passes keys through to the lower layers.
+
+This layer has one of the uglier things to write,  ~\vert~ for ~|~,
+but I couldn't figure out how to get org to understand I wanted the
+literal ~|~ in a table.
+
+It also has the most untranslated symbols, again I don't expect to do
+RGB settings often, so they were skipped.
+
+/Left hand/
 | VRSN | f1        | f2 | f3 | f4 | f5    | "" |
 | ""   | !         | @  | {  | }  | \vert | "" |
 | ""   | shifted_# | $  | (  | )  | `     |    |
@@ -62,7 +107,7 @@ Left hand
 | RGB_VAD | RGB_VAI | "" |
 
 
-Right hand
+/Right hand/
 | "" | f6   | f7 | f8 | f9 | f10 | f11 |
 | "" | up   |  7 |  8 |  9 | *   | f12 |
 |    | down |  4 |  5 |  6 | +   | ""  |
@@ -73,9 +118,9 @@ Right hand
 | ""      |         |         |
 | ""      | RGB_HUD | RGB_HUI |
 
-* keymap 3: media and mouse keys
+** Media and mouse keys layer
 :PROPERTIES:
-:layout: MDIA
+:LAYER: MDIA
 :END:
 
 Left hand
@@ -101,7 +146,14 @@ Right Hand
 | "" | "" | back |
 
 
-* key handling
+* C postamble
+
+We're back with a final C section.
+
+** process_record_user
+
+~process_record_user~ lets you wire up custom keycodes.  Default
+enables ~EPRM~, ~VRSN~, and ~RGB_SLD~ keys.
 
 #+BEGIN_SRC c
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -130,13 +182,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+#+end_src
 
+
+** matrix_init_user
+~matrix_init_user~ happens when the key matrix is setup, nothing
+special here by default.
+
+#+begin_src c
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
 
 };
 
+#+end_src
 
+
+** matrix_scan_user
+~matrix_scan_user~ is used to light the indicator leds to indicate
+layer you're in.
+
+#+begin_src c
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
 
@@ -160,3 +226,10 @@ void matrix_scan_user(void) {
   }
 };
 #+END_SRC
+
+* Conclusion
+
+And that's all there is to manage a custom keymap in org-mode.
+Hopefully you find this as useful as I hope to.
+
+Enjoy!
