@@ -1,55 +1,54 @@
 #+title: org2qmk_keymap
 
-ergodone/ergodox-ez layout
-
-* Idea
-As I was starting to hacking on a qmk keymap for an ergodone, anticipating that I'd
-later have to port it for the ergodox-ez, keymap.c to lay it out, it
-occured to me that I could use org-mode's table mode, and then
-translate it to C.
-
-There's no special syntax, outside of the handling of tables and
-headers.
-
-Headers that describe a layout should declare the ~LAYOUT~ property in
-their property drawer.  This sets up the keymaps definition in the
-output.
-
-~begin_src c~ blocks are tangled verbatim, so you can keep your own
-handlers alongside your layer definitions.
-
-Tables are translated left to right, top to bottom to generate an
-array.  The code will map user-readable key names into the keycodes
-that QMK defines.  Any not recognised will be copied verbatim, so you
-can still add custom keys or keys I didn't bother to translate yet.
-
-Blank cells are skippedn, so you'll want to make use of ~noop~ and
-~""~ to ensure your keymap is filled with the appropriate ~KC_NO~ and
-~KC_TRANS~ values keys for keys you don't want to specify the
-behaviour of.
-
-This should hopefully still be far simpler to manage steps than
-planning the keys, then counting symbols into the keymap.
-
+ergodone/ergodox-ez layout in org-mode
 
 * Usage
-See the generated code:
+To translate an org-file into a keymap.c
 
 #+BEGIN_SRC shell :tangle run.sh
 #!/bin/sh
-go run . examples/ergodone_default.org ergodone
+go run . examples/ergodone_default.org ergodone > keymap.c
 #+END_SRC
 
 A full compile cycle looks like this (assuming qmk in ~/src/qmk_firmware)
 #+begin_src shell :tangle compile.sh
 #!/bin/sh
-set -x
-go run . examples/ergodone_default.org ergodone > $HOME/src/qmk_firmware/keyboards/ergodone/keymaps/$(whoami)/keymap.c
+go run . examples/ergodone_default.org ergodone \
+   > $HOME/src/qmk_firmware/keyboards/ergodone/keymaps/$(whoami)/keymap.c
 cd $HOME/src/qmk_firmware
 make ergodone:$(whoami)
 #+end_src
 
 * Examples
-[[https://github.com/qmk/qmk_firmware/blob/0.8.116/keyboards/ergodone/keymaps/default/keymap.c][ergodone:default]] expressed using this tool in [[./examples/ergodone_default.org]]
+The main example file
+[[./examples/ergodone_default.org][ergodone_default.org]] translates
+[[https://github.com/qmk/qmk_firmware/blob/0.8.116/keyboards/ergodone/keymaps/default/keymap.c][ergodone:default]] from the QMK Firmware distribution.  It's also got a
+bunch of notes on how it works, so may be considered primary
+documentation for now.
 
-A [[./examples/ergodone_blank.org][blank layer]] for use with an ergodone.
+* See also
+
+- [[https://qmk.fm/][QMK Firmware]] the firmware we're generating keymaps for
+- [[https://github.com/niklasfasching/go-org][go-org]] the org-mode parser that this code piggybacks on.
+
+* FAQ
+
+I don't know if these are really FAQs, but I have asked myself the
+questions a few times.
+
+** Why didn't you write ox-qmk-keymap instead
+Two main reasons:
+
+I wanted to get some dust out of my system and program something in
+go.  I'd come across org-go when setting up hugo for my blog, and so
+it seemed like a good library to experiment around.  It is.
+
+More importantly, it just didn't occur to me until I'd written a chunk
+of this code to write it in elisp.  It'd probably be a much simpler
+and cleaner implementation, so if you do it let me know and I'll
+happily link to you.
+
+** Why not use the QMK Configurator?
+Sometimes I'm just not lazy enough.  Using the configurator and then
+versioning the keymap.json is a pretty good workflow, especially if
+you like guis.
