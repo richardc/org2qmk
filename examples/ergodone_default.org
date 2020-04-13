@@ -37,15 +37,15 @@ properties drawer, which names the layer.  The next chunk looks like
 this in raw org:
 
 #+begin_example
-, ** default layer
-, :PROPERTIES:
-, :LAYER: BASE
-, :END:
+,* default layer
+:PROPERTIES:
+:LAYER: BASE
+:END:
 #+end_example
 
 ** default layer
 :PROPERTIES:
-:LAYER: BASE
+:LAYER:    BASE
 :END:
 
 Tables are translated into keysyms where they exist in the mapping
@@ -82,7 +82,7 @@ there isn't currently a generalised translation for the form.
 
 ** Symbol layer
 :PROPERTIES:
-:LAYER: SYMB
+:LAYER:    SYMB
 :END:
 
 Here we're using the ~""~ special token, it's ~KC_TRANS~, or
@@ -120,7 +120,7 @@ RGB settings often, so they were skipped.
 
 ** Media and mouse keys layer
 :PROPERTIES:
-:LAYER: MDIA
+:LAYER:    MDIA
 :END:
 
 Left hand
