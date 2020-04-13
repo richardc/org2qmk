@@ -104,6 +104,11 @@ var mappings = map[string]string{
 	"{":         "KC_LCBR",
 	"}":         "KC_RCBR",
 	"\\vert":    "KC_PIPE",
+	":":         "KC_COLON",
+	"\"":        "KC_DQUOT",
+	"<":         "KC_LT",
+	">":         "KC_GT",
+	"?":         "KC_QUESTION",
 
 	// https://docs.qmk.fm/#/keycodes?id=mouse-keys
 	"mouse_up":      "KC_MS_UP",
